@@ -1,24 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
-
+import React, {useEffect} from "react";
+import { Login } from "../src/components/pages/Login/Login"
+import { Home } from "../src/components/pages/Home/Home"
+import "./App.css"
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import { Provider } from "react-redux";
+import store from "./store";
+import { checkAuthStatus } from "./actions";
+import PostList from "./components/pages/Posts/PostList";
 function App() {
+  useEffect(() => {
+    store.dispatch(checkAuthStatus());
+  }, [])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={store}>
+      <div className="main">
+        <BrowserRouter>
+              <Routes>
+                  <Route path="/" element={<Login/>}/>
+                  <Route path="/home" element={<PostList/>}/>
+              </Routes>
+          </BrowserRouter>
+      </div>
+    </Provider>
   );
 }
 
